@@ -15,6 +15,7 @@ constructor(){
 
                     object.db=db.db(EnvProvider.getConfig("DB"));
                     if(err){
+                        console.log(err);
                         emitterObject.emit('failure');
                         reject(err);
                     }
