@@ -1,0 +1,45 @@
+<div class="container h-100">
+    <div class="row h-100">
+    <div class="col-lg-12">
+     </div>
+    <div class="col-lg-12">
+    <div class="row h-100">
+      <div class="col-lg-3"></div>
+      <div class="col-lg-6 border">
+            <div class="container-fluid">
+                    <h2>Search Products</h2>
+                    <input class="form-control" [(ngModel)]='query' (keyup.enter)="onSearch()" type="text" placeholder="Search..">
+                    <br>
+                    <div class="table-responsive">
+                            <table class="table table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <th>No</th>
+                                        <th>Brand</th>
+                                        <th>Email</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="myTable">
+                                      <tr *ngFor='let record of result;let i=index'>
+                                        <td>{{i+1}}</td>
+                                        <td>{{record.title}}</td>
+                                        <td>{{record.price}}</td>
+                                      </tr>
+                                      
+                                    </tbody>
+                                  </table> 
+                          </div>
+                  
+                    
+                  
+                  </div>
+
+                </div>
+      <div class="col-lg-3"></div>
+    </div>
+    
+    </div>
+    <div class="col-lg-12"></div>
+    </div>
+    
+    </div>

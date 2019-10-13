@@ -1,0 +1,9 @@
+{
+"MONGO_URL":"mongodb+srv://trarawat:Newuser@88@cluster0-animi.mongodb.net/test?retryWrites=true&w=majority",
+"DB":"json_parser",
+"COL_NAME":"products",
+"PORT":"3000",
+"AWS_URL":"https://s3.amazonaws.com/open-to-cors/assignment.json",
+"DIST":"./ui/JSONParser/dist/JSONParser"
+
+}

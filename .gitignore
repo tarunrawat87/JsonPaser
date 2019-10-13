@@ -1,0 +1,9 @@
+#ignore node_modules
+node_modules
+
+#ingonre node_modules of angular app
+./ui/JSONParser/node_modules
+
+
+#ingonre dist of angular app
+./ui/JSONParser/.gitignore
