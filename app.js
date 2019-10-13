@@ -14,7 +14,7 @@ app.on('success',()=>{
     DataLayer.loadDatafromDb().then(()=>{
         console.log('app data structure loaded !');
         registerRoutes();
-        app.listen(EnvProvider.getConfig("PORT"),()=>{
+        app.listen(process.env.PORT||EnvProvider.getConfig("PORT"),()=>{
             console.log('app is listening to '+EnvProvider.getConfig("PORT"));
         });
     }).catch((err)=>{
