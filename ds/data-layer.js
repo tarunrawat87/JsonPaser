@@ -106,14 +106,20 @@ class DataLayer {
                 limit = query.split(" below ")[1];
                 resultSet = me.filterResult(1, parseInt(limit), resultSet);
             }
+            
+            
+       
+       
         }
 
 
-
+        resultSet.sort((a,b)=>{
+            return parseInt(b.popularity)-parseInt(a.popularity);
+        });
 
         return resultSet;
     }
-
+/*get result when query contans AND keyword*/
     getANDResult(query) {
         let keyword = query.split(" above ")[0].split(" below ")[0].split(" and ");
         let result = [];
@@ -140,6 +146,8 @@ class DataLayer {
         products1.forEach((index) => {
             result.push(this.productsArr[index]);
         })
+
+       
 
         return result;
     }
@@ -207,5 +215,7 @@ class DataLayer {
         }
         return arr;
     }
+
+    
 }
 module.exports = new DataLayer();

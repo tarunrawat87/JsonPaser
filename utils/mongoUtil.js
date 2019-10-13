@@ -16,11 +16,11 @@ constructor(){
                     object.db=db.db(EnvProvider.getConfig("DB"));
                     if(err){
                         console.log(err);
-                        emitterObject.emit('failure');
+                        if(emitterObject)emitterObject.emit('failure');
                         reject(err);
                     }
                     else{
-                        emitterObject.emit('success');
+                        if(emitterObject)emitterObject.emit('success');
                         resolve();
                     }
                    

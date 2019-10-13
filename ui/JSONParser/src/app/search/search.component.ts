@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchService } from '../search.service';
 
+
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -15,7 +17,7 @@ public result:any;
 
   ngOnInit() {
   }
-
+//will be invoked on enter hit on search tab
   onSearch(){
     let me=this;
     let finalQuery={"query":me.query.trim().toLowerCase()};
