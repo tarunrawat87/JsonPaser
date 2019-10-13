@@ -7,12 +7,10 @@ import { SearchService } from '../search.service';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-private query:string;
-private result:any;
-private showTable:boolean;
+public query:string;
+public result:any;
   constructor(private searchService:SearchService) { 
     this.result=[];
-    this.showTable=false
   }
 
   ngOnInit() {
@@ -23,10 +21,9 @@ private showTable:boolean;
     let finalQuery={"query":me.query.trim()};
     console.log(finalQuery);
     me.result=[];
-    me.showTable=false;
+  
     me.searchService.getRecords(finalQuery).subscribe((results)=>{
     me.result=results;
-    me.showTable=true;
     })
 
   }
