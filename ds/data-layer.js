@@ -57,8 +57,19 @@ class DataLayer {
                     }
 
                 });
+                
+                
+                if (me.map.has(ele.title)) {
+                    let set = me.map.get(ele.title);
+                    set.add(index);
+                    me.map.set(ele.title, set);
+                } else {
+                    let set = new Set();
+                    set.add(index);
+                    me.map.set(ele.title, set);
 
-
+                }
+                    
             }
             index++;
         });
