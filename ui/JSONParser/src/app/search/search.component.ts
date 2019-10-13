@@ -18,8 +18,8 @@ public result:any;
 
   onSearch(){
     let me=this;
-    let finalQuery={"query":me.query.trim()};
-    console.log(finalQuery);
+    let finalQuery={"query":me.query.trim().toLowerCase()};
+    
     me.result=[];
   
     me.searchService.getRecords(finalQuery).subscribe((results)=>{
