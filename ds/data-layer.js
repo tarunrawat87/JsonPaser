@@ -39,7 +39,7 @@ class DataLayer {
         let index = 0;
         me.productsArr.forEach((ele) => {
 
-            let keywords = ele.title.trim().split(" ");
+            let keywords = ele.title.toLowerCase().trim().split(" ");
 
             if (keywords) {
 
@@ -59,14 +59,14 @@ class DataLayer {
                 });
                 
                 
-                if (me.map.has(ele.title)) {
-                    let set = me.map.get(ele.title);
+                if (me.map.has(ele.title.toLowerCase())) {
+                    let set = me.map.get(ele.title.toLowerCase());
                     set.add(index);
-                    me.map.set(ele.title, set);
+                    me.map.set(ele.title.toLowerCase(), set);
                 } else {
                     let set = new Set();
                     set.add(index);
-                    me.map.set(ele.title, set);
+                    me.map.set(ele.title.toLowerCase(), set);
 
                 }
                     
@@ -79,10 +79,10 @@ class DataLayer {
     */
     getProducts(query) {
         let me = this;
-        let contaninsAND = query.includes("AND");
-        let containsOR = query.includes("OR");
-        let containsBELOW = query.includes("BELOW");
-        let containsABOVE = query.includes("ABOVE");
+        let contaninsAND = query.includes("and");
+        let containsOR = query.includes("or");
+        let containsBELOW = query.includes("below");
+        let containsABOVE = query.includes("above");
         let resultSet;
         if (contaninsAND || containsOR) {
 
@@ -99,11 +99,11 @@ class DataLayer {
         if (containsABOVE || containsBELOW) {
             let limit;
             if (containsABOVE) {
-                limit = query.split(" ABOVE ")[1];
+                limit = query.split(" above ")[1];
 
                 resultSet = me.filterResult(-1, parseInt(limit), resultSet);
             } else {
-                limit = query.split(" BELOW ")[1];
+                limit = query.split(" below ")[1];
                 resultSet = me.filterResult(1, parseInt(limit), resultSet);
             }
         }
@@ -115,7 +115,7 @@ class DataLayer {
     }
 
     getANDResult(query) {
-        let keyword = query.split(" ABOVE ")[0].split(" BELOW")[0].split(" AND ");
+        let keyword = query.split(" above ")[0].split(" below ")[0].split(" and ");
         let result = [];
         let products1, products2;
         //checking if first word is valid keyword
@@ -148,7 +148,7 @@ class DataLayer {
     when result only contains Title
     */
     getResult(query) {
-        let keyword = query.split(" ABOVE ")[0].split(" BELOW ")[0];
+        let keyword = query.split(" above ")[0].split(" below ")[0];
 
         let result = [];
         //if the keyword is not present in any title
@@ -166,7 +166,7 @@ class DataLayer {
     /*when query contains OR*/
     getORResult(query) {
 
-        let keyword = query.split(" ABOVE ")[0].split(" BELOW ")[0].split(" OR ");
+        let keyword = query.split(" above ")[0].split(" below ")[0].split(" or ");
 
         let result = [];
         let products1, products2;
