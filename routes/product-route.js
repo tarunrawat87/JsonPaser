@@ -8,7 +8,7 @@ router.use(bodyParser.json());
 router.use('/',express.static('./ui/JSONParser/dist/JSONParser'));
 router.post('/find',(req,res)=>{
 var query=req.body.query;
-console.log(query);
+//console.log(query);
 
 ProductController.getProducts(query).then((result)=>{
 res.send(result);
