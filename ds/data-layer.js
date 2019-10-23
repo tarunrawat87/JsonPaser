@@ -41,6 +41,26 @@ class DataLayer {
 
             let keywords = ele.title.toLowerCase().trim().split(" ");
 
+           let i=1;     
+            let substrings=keywords[0];
+            let str=substrings+" ";
+            while(i<keywords.length){
+                str+=keywords[i];
+               // console.log(str)
+                if (me.map.has(str)) {
+                    let set = me.map.get(str);
+                    set.add(index);
+                    me.map.set(str, set);
+                } else {
+                    let set = new Set();
+                    set.add(index);
+                    me.map.set(str, set);
+
+                }
+               str+=(keywords.length-1==i?"":" ");
+             i++;   
+            }
+
             if (keywords) {
 
                 keywords.forEach((keyword) => {
@@ -73,6 +93,7 @@ class DataLayer {
             }
             index++;
         });
+     //   console.log(me.map)
     }
     /* 
     will parse query and will get products
@@ -84,6 +105,51 @@ class DataLayer {
         let containsBELOW = query.includes("below");
         let containsABOVE = query.includes("above");
         let resultSet;
+        let startsWithAoveORBelow=query.startsWith("above")||query.startsWith("below");
+        if(startsWithAoveORBelow){
+            let limit=parseInt(query.split(" ")[1]);
+            let startsWithAbove=query.startsWith("above");
+            
+            if(startsWithAbove){
+                resultSet = me.filterResult(-1, limit, me.productsArr);
+            }else{
+                resultSet = me.filterResult(1, limit, me.productsArr);
+            }
+            return resultSet;
+        }
+
+         if(me.conatainsMultipeANDOR(query)){
+            
+            if(me.containsMultipleAND(query)){
+              let andQuery=  query.split(" above ")[0].split(" below ")[0];
+                resultSet=me.getMultipleANDResult(andQuery);
+            }else{
+                if(me.containsMultipleOR(query)){
+                     let orQuery=  query.split(" above ")[0].split(" below ")[0];
+                    resultSet=me.getMultipleORResult(orQuery);
+       
+                }else{
+                  return [];  
+                }
+
+            }
+            
+            if(containsABOVE){
+                let limit= query.split(" above ")[1];
+                resultSet= me.filterResult(-1, parseInt(limit), resultSet);
+            }else{
+               if(containsBELOW){
+                let limit=query.split(" below ")[1];
+                resultSet= me.filterResult(1, parseInt(limit), resultSet);
+               } 
+            }
+
+            resultSet.sort((a,b)=>{
+                return parseInt(b.popularity)-parseInt(a.popularity);
+            });    
+            return resultSet;
+         }   
+
         if (contaninsAND || containsOR) {
 
             if (contaninsAND) {
@@ -157,14 +223,16 @@ class DataLayer {
     */
     getResult(query) {
         let keyword = query.split(" above ")[0].split(" below ")[0];
-
         let result = [];
         //if the keyword is not present in any title
+        //console.log(query);
         if (this.map.has(keyword) == false) {
             return result;
         }
-
+        
+      
         let indexes = Array.from(this.map.get(keyword));
+        console.log(indexes);
         indexes.forEach((index) => {
             result.push(this.productsArr[index]);
         })
@@ -197,6 +265,75 @@ class DataLayer {
 
         return result;
     }
+/*when result get multiple AND*/
+    getMultipleANDResult(query){
+        let result=[];
+        let keywords=query.split(" and ");
+        let indexes= Array.from(this.map.get(keywords[0]));
+        let i=1;
+        let product1=indexes,product2;
+        while(i<keywords.length){
+         product2=Array.from(this.map.get(keywords[i]));
+          product1=product2.filter((ele)=>{
+            return product1.indexOf(ele)!=-1;
+          })  
+         
+        i++;
+        }
+            product1.forEach((index) => {
+            result.push(this.productsArr[index]);
+        })
+        return result;
+
+
+    }
+
+    getMultipleORResult(query){
+        let result=[];
+        let keywords=query.split(" or ");
+        let i=0;
+        let indexes=[];
+        let product;
+        while(i<keywords.length){
+           indexes= indexes.concat(Array.from(this.map.get(keywords[i])));
+         
+        i++;
+        }
+        product=new Set(indexes);    
+      //  console.log(product)
+        product.forEach((index) => {
+            result.push(this.productsArr[index]);
+        })
+        //console.log();
+        //console.log(result);
+        return result;
+
+    }
+
+
+    conatainsMultipeANDOR(query){
+        if(!(query.includes("and")||query.includes("or"))) return false;
+        
+         if(query.split(" and ").length>=3){
+            return true;
+         }else{
+            if(query.split(" or ").length>=3){
+             return true;
+            }else{
+             return false;   
+            }
+
+         }
+            
+
+    }
+
+containsMultipleAND(query){
+    return query.includes("or")==false;
+}
+containsMultipleOR(query){
+    return query.includes("and")==false;
+}
 
     /*will filter result with given limit*/
     filterResult(limitType, limit, arr) {
